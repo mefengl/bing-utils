@@ -18,13 +18,14 @@ just copy and paste the code below
 
 ```js
 function getActionBar() {
-  return document.querySelector("cib-serp").shadowRoot.querySelector("cib-action-bar").shadowRoot;
+  return document.querySelector("cib-serp")?.shadowRoot?.querySelector("cib-action-bar")?.shadowRoot;
 };
 ```
 
 ```js
 function getSubmitButton() {
   const actionBar = getActionBar();
+  if (!actionBar) { return null; }
   return actionBar.querySelector('button[aria-label="Submit"]');
 };
 ```
@@ -32,6 +33,7 @@ function getSubmitButton() {
 ```js
 function getTextarea() {
   const actionBar = getActionBar();
+  if (!actionBar) { return null; }
   return actionBar.querySelector('textarea');
 };
 ```
@@ -39,10 +41,10 @@ function getTextarea() {
 ```js
 function getStopGeneratingButton() {
   const actionBar = getActionBar();
-  const stopGeneratingButton = actionBar.querySelector('cib-typing-indicator').shadowRoot.querySelector('button[aria-label="Stop Responding"]');
-  if (stopGeneratingButton.disabled) {
-    return null;
-  }
+  if (!actionBar) { return null; }
+  const stopGeneratingButton = actionBar.querySelector('cib-typing-indicator')?.shadowRoot?.querySelector('button[aria-label="Stop Responding"]');
+  if (!stopGeneratingButton) { return null; }
+  if (stopGeneratingButton.disabled) { return null; }
   return stopGeneratingButton;
 };
 ```
@@ -50,19 +52,21 @@ function getStopGeneratingButton() {
 ```js
 function getNewChatButton() {
   const actionBar = getActionBar();
+  if (!actionBar) { return null; }
   return actionBar.querySelector('button[aria-label="New topic"]');
 };
 ```
 
 ```js
 function getConversation() {
-  return document.querySelector("cib-serp").shadowRoot.querySelector("cib-conversation").shadowRoot;
+  return document.querySelector("cib-serp")?.shadowRoot?.querySelector("cib-conversation")?.shadowRoot;
 };
 ```
 
 ```js
 function getChatTurns() {
   const conversation = getConversation();
+  if (!conversation) { return null; }
   return Array.from(conversation.querySelectorAll('cib-chat-turn')).map(t => t.shadowRoot);
 };
 ```
@@ -70,6 +74,7 @@ function getChatTurns() {
 ```js
 function getLastChatTurn() {
   const chatTurns = getChatTurns();
+  if (!chatTurns) { return null; }
   return chatTurns[chatTurns.length - 1];
 };
 ```
@@ -77,13 +82,15 @@ function getLastChatTurn() {
 ```js
 function getLastResponse() {
   const lastChatTurn = getLastChatTurn();
-  return lastChatTurn.querySelectorAll('cib-message-group')[1].shadowRoot;
+  if (!lastChatTurn) { return null; }
+  return lastChatTurn.querySelectorAll('cib-message-group')[1]?.shadowRoot;
 };
 ```
 
 ```js
 function getLastResponseText() {
   const lastResponse = getLastResponse();
+  if (!lastResponse) { return null; }
   return Array.from( lastResponse.querySelectorAll('cib-message') )
     .map(m => m.shadowRoot)
     .find(m => m.querySelector('cib-shared'))
@@ -94,9 +101,12 @@ function getLastResponseText() {
 ```js
 function send(text) {
   const textarea = getTextarea();
+  if (!textarea) { return null; }
   textarea.value = text;
   textarea.dispatchEvent(new Event('input'));
-  getSubmitButton().click();
+  const submitButton = getSubmitButton();
+  if (!submitButton) { return null; }
+  submitButton.click();
 };
 ```
 
