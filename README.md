@@ -6,7 +6,7 @@
 
 ## Notice
 
-this repo will soon be put into `chat-kit`, you can find more about it in [chatgpt-playground](https://github.com/mefengl/chatgpt-playground)
+this repo has been put into `chatkit`, you can find more about it in [chat-play/packages/chatkit/bingchat](https://github.com/mefengl/chat-play).
 
 ## Description
 
